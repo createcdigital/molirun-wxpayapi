@@ -25,7 +25,7 @@ $input->SetTotal_fee($fee);
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag($body);
-$input->SetNotify_url("https://pay.wechat.createcdigital.com/molirunh5170308/wxpay/pub/notify.php");
+$input->SetNotify_url("https://pay.wechat.createcdigital.com/molirun-wxpayapi/wxpay/pub/notify.php");
 $input->SetTrade_type("JSAPI");
 $input->SetOpenid($openid);
 $order = WxPayApi::unifiedOrder($input);

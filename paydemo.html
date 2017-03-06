@@ -15,19 +15,9 @@
 <pre>
     <code class="js">
         &lt;script&gt;
-            var data = {};
-            data.name = "中文名";
-            data.phone = "13564137185";
-            data.date = "3号/10点";
-            data.type = "团队"; // "个人"
-            data.group_ppl = "30"; // if type = "个人" , than group_ppl = "0"
-            data.narrator = "是"; // "是" or "否"
-            data.item = "机芯组装与定制";
-            data.item_time = "10:00-11:00";
-
-            $.post('http://shclockmuseum-h5-api.createcdigital.com/booking/store', data, function(data){
-                console.log(data.rs); // "success" or "store fail" or "error with message"
-            }, "JSON")
+            $.post('https://pay.wechat.createcdigital.com/molirun-wxpayapi/wxpay/pub/pay.php', data, function(data){
+           console.log(data.rs);
+       }, "JSON");
         &lt;/script&gt;
     </code>
 </pre>
@@ -45,11 +35,45 @@
             hljs.highlightBlock(block);
         });
 
+       var jsapi = undefined;
+
        var data = {"openid": "onlckwtzdvnbeVhpTDJ7C-J103bc", "grouptype": "2"};
 
        $.post('https://pay.wechat.createcdigital.com/molirun-wxpayapi/wxpay/pub/pay.php', data, function(data){
            console.log(data.rs);
+           jsapi = data;
+           callpay();
        }, "JSON");
+
+
+
+        var callpay = function(jsapi){
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsapicall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsapicall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsapicall);
+                }
+            }else{
+                app.p6.jsapicall();
+            }
+        };
+
+        var jsapicall = function(){
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', jsapi, function(res){
+                    if(res.err_msg == "get_brand_wcpay_request:ok" )
+                    {
+                        alert("支付成功");
+                    }else{
+                        alert("支付失败！");
+                    }
+                }
+            );
+        };
+
+
     });
 </script>
 </body>
