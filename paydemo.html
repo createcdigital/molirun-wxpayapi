@@ -35,13 +35,11 @@
             hljs.highlightBlock(block);
         });
 
-       var jsapi = undefined;
 
        var data = {"openid": "onlckwtzdvnbeVhpTDJ7C-J103bc", "grouptype": "2"};
-
        $.post('https://pay.wechat.createcdigital.com/molirun-wxpayapi/wxpay/pub/pay.php', data, function(data){
            console.log(data.rs);
-           jsapi = data;
+           jsapicall(jsapi);
            callpay();
        }, "JSON");
 
@@ -60,7 +58,7 @@
             }
         };
 
-        var jsapicall = function(){
+        var jsapicall = function(jsapi){
             WeixinJSBridge.invoke(
                 'getBrandWCPayRequest', jsapi, function(res){
                     if(res.err_msg == "get_brand_wcpay_request:ok" )
