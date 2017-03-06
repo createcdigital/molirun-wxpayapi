@@ -1,2 +1,3 @@
 #ignore files
 wxpay/lib/WxPay.Config.php
+weChat/weChatId.php

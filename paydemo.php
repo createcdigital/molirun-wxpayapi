@@ -1,3 +1,16 @@
+<?php
+    session_start();
+
+    require_once "weChatId.php";
+
+    if(!isset($_COOKIE["openid"]) && !isset($_SESSION["openid"]))
+    {
+        header("Location:weChat/autho.php");
+    }else
+    {
+        $_SESSION['openid']     = $_COOKIE['openid'];
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +49,7 @@
         });
 
 
-       var data = {"openid": "onlckwtzdvnbeVhpTDJ7C-J103bc", "grouptype": "2"};
+       var data = {"openid": "<?php echo $_SESSION['openid']; ?>", "grouptype": "2"};
        $.post('https://pay.wechat.createcdigital.com/molirun-wxpayapi/wxpay/pub/pay.php', data, function(data){
            console.log(data.rs);
            jsapicall(data);
