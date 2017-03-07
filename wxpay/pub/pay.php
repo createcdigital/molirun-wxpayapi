@@ -11,8 +11,8 @@ $openid      = $_POST['openid'];
 $grouptype   = $_POST['grouptype'];
 
 // body content
-$body        = $packagetype < 2 ? "100元一般跑" : "200元家庭跑";
-$fee         = $packagetype < 2 ? "10000" : "20000";
+$body        = $grouptype < 2 ? "100元一般跑" : "200元家庭跑";
+$fee         = $grouptype < 2 ? "10000" : "20000";
 $outtradeno  = WxPayConfig::MCHID.date("YmdHis");
 $tools       = new JsApiPay();
 

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example Code</title>
+
+    <!-- build:js scripts/jwechatoauth.js -->
+    <script src="wechatoauth.js"></script>
+    <!-- endbuild -->
+ 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+</head>
+<body>
+
+<h1>Api example code:</h1>
+
+<pre>
+    <code class="js">
+        &lt;script&gt;
+           var data = {"openid": "onlckwtzdvnbeVhpTDJ7C-J103bc", "grouptype": "2"};
+           $.post('wxpay/pub/pay.php', data, function(data){
+               console.log(data.rs);
+               jsapicall(data);
+               callpay();
+           }, "JSON");
+
+
+
+            var callpay = function(){
+                if (typeof WeixinJSBridge == "undefined"){
+                    if( document.addEventListener ){
+                        document.addEventListener('WeixinJSBridgeReady', jsapicall, false);
+                    }else if (document.attachEvent){
+                        document.attachEvent('WeixinJSBridgeReady', jsapicall);
+                        document.attachEvent('onWeixinJSBridgeReady', jsapicall);
+                    }
+                }else{
+                    jsapicall();
+                }
+            };
+
+            var jsapicall = function(jsapi){
+                var jsapi_obj = {"appId": jsapi.appId,"nonceStr": jsapi.nonceStr,"package": jsapi.package,"signType": jsapi.signType,"timeStamp": jsapi.timeStamp,"paySign": jsapi.paySign};
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', jsapi_obj, function(res){
+                        if(res.err_msg == "get_brand_wcpay_request:ok" )
+                        {
+                            alert("支付成功");
+                        }else{
+                            alert("支付失败！");
+                        }
+                    }
+                );
+            };
+        &lt;/script&gt;
+    </code>
+</pre>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- highlight.js -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+
+        var AppCommon = function(){
+            return {
+                getCookie : function(c_name)
+                {
+                    if (document.cookie.length>0)
+                    {
+                        var c_start=document.cookie.indexOf(c_name + "=");
+                        if (c_start!=-1)
+                        {
+                            c_start=c_start + c_name.length+1;
+                            var c_end=document.cookie.indexOf(";",c_start);
+                            if (c_end==-1) c_end=document.cookie.length
+                                return unescape(document.cookie.substring(c_start,c_end));
+                        }
+                    }
+                    return ""
+                },
+
+                wechatUserInfo : undefined,
+                getUser : function(){
+                    if(!this.wechatUserInfo)
+                    {
+                        var wechatUserInfoBase64 = this.getCookie("wechatUserInfo");
+                        this.wechatUserInfo = JSON.parse(atob(wechatUserInfoBase64));
+                    }
+
+                    return this.wechatUserInfo;
+                },
+            }
+        }();
+
+
+
+       var data = {"openid": AppCommon.getUser().id, "grouptype": "2"};
+       $.post('wxpay/pub/pay.php', data, function(data){
+           console.log(data.rs);
+           jsapicall(data);
+           callpay();
+       }, "JSON");
+
+
+
+        var callpay = function(){
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsapicall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsapicall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsapicall);
+                }
+            }else{
+                jsapicall();
+            }
+        };
+
+        var jsapicall = function(jsapi){
+            var jsapi_obj = {"appId": jsapi.appId,"nonceStr": jsapi.nonceStr,"package": jsapi.package,"signType": jsapi.signType,"timeStamp": jsapi.timeStamp,"paySign": jsapi.paySign};
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', jsapi_obj, function(res){
+                    if(res.err_msg == "get_brand_wcpay_request:ok" )
+                    {
+                        alert("支付成功");
+                    }else{
+                        alert("支付失败！");
+                    }
+                }
+            );
+        };
+
+
+    });
+</script>
+</body>
+</html>
