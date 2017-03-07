@@ -20,9 +20,8 @@
 <pre>
     <code class="js">
         &lt;script&gt;
-           var data = {"openid": "onlckwtzdvnbeVhpTDJ7C-J103bc", "grouptype": "2"};
+           var data = {"openid": "onlckwtzdvnbeVhpTDJ7C-J103bc", "grouptype": "family"}; // grouptype:("5km", "10km", "family")
            $.post('wxpay/pub/pay.php', data, function(data){
-               console.log(data.rs);
                jsapicall(data);
                callpay();
            }, "JSON");
@@ -105,9 +104,8 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "2"};
+       var data = {"openid": AppCommon.getUser().id, "grouptype": "family"};
        $.post('wxpay/pub/pay.php', data, function(data){
-           console.log(data.rs);
            jsapicall(data);
            callpay();
        }, "JSON");
