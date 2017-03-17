@@ -18,7 +18,7 @@ class PayNotifyCallBack extends WxPayNotify
 		$input = new WxPayOrderQuery();
 		$input->SetTransaction_id($transaction_id);
 		$result = WxPayApi::orderQuery($input);
-		Log::DEBUG("query:" . json_encode($result));
+		Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, query order: " . json_encode($result));
 		if(array_key_exists("return_code", $result)
 			&& array_key_exists("result_code", $result)
 			&& $result["return_code"] == "SUCCESS"
@@ -32,7 +32,7 @@ class PayNotifyCallBack extends WxPayNotify
 	//重写回调处理函数
 	public function NotifyProcess($data, &$msg)
 	{
-		Log::DEBUG("call back:" . json_encode($data));
+		Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, call back: " . json_encode($data));
 		$notfiyOutput = array();
 
 		if(!array_key_exists("transaction_id", $data)){
@@ -44,21 +44,39 @@ class PayNotifyCallBack extends WxPayNotify
 			$msg = "订单查询失败";
 			return false;
 		}
-		// update db
-		//$this->UpdatePaystatus($data);
+
+		if(!$this->Queryorder($data["out_trade_no"])){
+			$msg = "缺少商户订单号";
+			return false;
+		}
+
+		// CALL BACK
+		$this->UpdatePayStatusTODB($data);
 
 		return true;
 	}
 
-
-	public function UpdatePaystatus($data)
+	// 自定义的支付成功回调更新支付状态接口
+	public function UpdatePayStatusTODB($data)
 	{
-		include_once '../../db/connect.php';
-		include_once 'updatepaystatus.php';
-		include_once 'updatestock.php';
+		Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, start UpdatePayStatusTODB. transaction_id: ".$data["transaction_id"]);
+
+		//url-ify the data for the POST
+		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		rtrim($fields_string,'&');
+
+		$ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, WxPayConfig::CALLBACK_URL);
+	    curl_setopt($ch, CURLOPT_POST, count($data));
+	    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    $res = curl_exec($ch);
+	    curl_close($ch);
 	}
 }
 
-Log::DEBUG("begin notify");
+Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, begin notify");
 $notify = new PayNotifyCallBack();
 $notify->Handle(false);
