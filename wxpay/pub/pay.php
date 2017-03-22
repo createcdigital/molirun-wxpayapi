@@ -38,7 +38,7 @@ if(isset($openid) && isset($grouptype) && isset($openid))
     $input->SetOpenid($openid);
     $order           = WxPayApi::unifiedOrder($input);
 
-    $this->getUnifiedOrderResult($order);
+    getUnifiedOrderResult($order);
 
     $tools           = new JsApiPay();
     return $tools->GetJsApiParameters($order);
@@ -60,6 +60,6 @@ function getUnifiedOrderResult($UnifiedOrderResult)
     {
         $result = "FAIL, message: ".$UnifiedOrderResult['return_code'].$UnifiedOrderResult['return_msg'];
 
-        Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi success, param(openid: ".$openid.", grouptype:".$grouptype.", idcards: ".$idcards."), result(".$result.")");
+        Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi fail, result: ".$result);
     }
 }

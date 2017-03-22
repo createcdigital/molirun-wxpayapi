@@ -133,7 +133,7 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "family", "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
+       var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
            callpay(JSON.parse(data));
        }, "JSON");
