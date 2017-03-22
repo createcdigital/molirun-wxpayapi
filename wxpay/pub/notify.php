@@ -73,6 +73,7 @@ class PayNotifyCallBack extends WxPayNotify
 	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	    $res = curl_exec($ch);
+	    Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, end UpdatePayStatusTODB. transaction_id: ".$data["transaction_id"].", result:".$res);
 	    curl_close($ch);
 	}
 }

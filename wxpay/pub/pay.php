@@ -13,9 +13,9 @@ $log = Log::Init($logHandler, 15);
 
 
 // param from POST Request
-$openid      = $_POST['openid'];
-$grouptype   = $_POST['grouptype'];
-$outtradeno     = $_POST['outtradeno'];
+$openid     = $_POST['openid'];
+$grouptype  = $_POST['grouptype'];
+$outtradeno = $_POST['outtradeno'];
 
 
 if(isset($openid) && isset($grouptype) && isset($openid))
@@ -33,6 +33,7 @@ if(isset($openid) && isset($grouptype) && isset($openid))
     $input->SetTime_start(date("YmdHis"));
     $input->SetTime_expire(date("YmdHis", time() + 600));
     $input->SetGoods_tag($body);
+    $input->SetAttach($body);
     $input->SetTrade_type("JSAPI");
     $input->SetOpenid($openid);
     $order           = WxPayApi::unifiedOrder($input);
@@ -58,7 +59,7 @@ function getUnifiedOrderResult($UnifiedOrderResult)
         || $UnifiedOrderResult['prepay_id'] == "")
     {
         $result = "FAIL, message: ".$UnifiedOrderResult['return_code'].$UnifiedOrderResult['return_msg'];
-    }
 
-    Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi success, param(openid: ".$openid.", grouptype:".$grouptype.", idcards: ".$idcards."), result(".$result.")");
+        Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi success, param(openid: ".$openid.", grouptype:".$grouptype.", idcards: ".$idcards."), result(".$result.")");
+    }
 }
