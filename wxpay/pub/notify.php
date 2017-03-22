@@ -1,6 +1,5 @@
 <?php
 ini_set('date.timezone','Asia/Shanghai');
-error_reporting(E_ERROR);
 
 require_once "../lib/WxPay.Api.php";
 require_once '../lib/WxPay.Notify.php';
@@ -39,14 +38,14 @@ class PayNotifyCallBack extends WxPayNotify
 			$msg = "输入参数不正确";
 			return false;
 		}
-		//查询订单，判断订单真实性
-		if(!$this->Queryorder($data["transaction_id"])){
-			$msg = "订单查询失败";
+		if(!array_key_exists("out_trade_no", $data)){
+			$msg = "缺少商户订单号";
 			return false;
 		}
 
-		if(!$this->Queryorder($data["out_trade_no"])){
-			$msg = "缺少商户订单号";
+		//查询订单，判断订单真实性
+		if(!$this->Queryorder($data["transaction_id"])){
+			$msg = "订单查询失败";
 			return false;
 		}
 
@@ -59,10 +58,10 @@ class PayNotifyCallBack extends WxPayNotify
 	// 自定义的支付成功回调更新支付状态接口
 	public function UpdatePayStatusTODB($data)
 	{
-		Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, start UpdatePayStatusTODB. transaction_id: ".$data["transaction_id"]);
+		Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, start UpdatePayStatusTODB. transaction_id: ".$data["transaction_id"].", data: ".json_encode($data));
 
-		//url-ify the data for the POST
-		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		$fields_string = "";
+		foreach($data as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 		rtrim($fields_string,'&');
 
 		$ch = curl_init();
@@ -78,6 +77,6 @@ class PayNotifyCallBack extends WxPayNotify
 	}
 }
 
-Log::DEBUG("===timeStamp:".date("YmdHis")." notify.php, begin notify");
+Log::DEBUG("=======================timeStamp:".date("YmdHis")." begin notify=======================");
 $notify = new PayNotifyCallBack();
 $notify->Handle(false);
