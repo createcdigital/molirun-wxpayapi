@@ -53,7 +53,7 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "family"};
+       var data = {"openid": AppCommon.getUser().id, "grouptype": "family", "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
            callpay(JSON.parse(data)); // callpay(data), 不同的web容器对json的返回解析不一致
        }, "JSON");
@@ -133,7 +133,7 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "family"};
+       var data = {"openid": AppCommon.getUser().id, "grouptype": "family", "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
            callpay(JSON.parse(data));
        }, "JSON");
