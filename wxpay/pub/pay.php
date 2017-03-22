@@ -1,7 +1,7 @@
 <?php
-session_start();
 ini_set('date.timezone','Asia/Shanghai');
-//error_reporting(E_ERROR);
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
 require_once "../lib/WxPay.Api.php";
 require_once "WxPay.JsApiPay.php";
 
@@ -18,7 +18,7 @@ $grouptype  = $_POST['grouptype'];
 $outtradeno = $_POST['outtradeno'];
 
 
-if(isset($openid) && isset($grouptype) && isset($openid))
+if(isset($openid) && isset($grouptype) && isset($outtradeno))
 {
     //            body content
     $body         = $grouptype != "家庭跑" ? "100元一般跑" : "200元家庭跑";
@@ -32,7 +32,6 @@ if(isset($openid) && isset($grouptype) && isset($openid))
     $input->SetTotal_fee($fee);
     $input->SetTime_start(date("YmdHis"));
     $input->SetTime_expire(date("YmdHis", time() + 600));
-    $input->SetGoods_tag($body);
     $input->SetAttach($body);
     $input->SetTrade_type("JSAPI");
     $input->SetOpenid($openid);
@@ -41,12 +40,12 @@ if(isset($openid) && isset($grouptype) && isset($openid))
     getUnifiedOrderResult($order);
 
     $tools           = new JsApiPay();
-    return $tools->GetJsApiParameters($order);
+    echo $tools->GetJsApiParameters($order);
 }else
 {
     Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi fail, because missing must param.");
 
-    return json_encode(["result" => "FAIL", "message" => "missing must param"]);
+    echo json_encode(["result" => "FAIL", "message" => "missing must param"]);
 }
 
 
@@ -58,8 +57,8 @@ function getUnifiedOrderResult($UnifiedOrderResult)
         || !array_key_exists("prepay_id", $UnifiedOrderResult)
         || $UnifiedOrderResult['prepay_id'] == "")
     {
-        $result = "FAIL, message: ".$UnifiedOrderResult['return_code'].$UnifiedOrderResult['return_msg'];
+        $message = "message: ".$UnifiedOrderResult['return_code'].$UnifiedOrderResult['return_msg'];
 
-        Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi fail, result: ".$result);
+        Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi fail, ".$message);
     }
 }
