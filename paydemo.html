@@ -20,7 +20,11 @@
 <pre>
     <code class="js">
         &lt;script&gt;
-           var AppCommon = function(){
+            /*＊
+             ＊ 获取微信支付jsapi参数接口
+             * 注意：微信支付接口需要在微信开发调试工具或微信客户端上才可以正常获取到jsapi参数。
+             ＊/
+            var AppCommon = function(){
             return {
                 getCookie : function(c_name)
                 {
@@ -55,7 +59,7 @@
 
        var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
-           callpay(typeof o == 'object' ? data : JSON.parse(data));
+           callpay(typeof data == 'object' ? data : JSON.parse(data));
        }, "JSON");
 
         var callpay = function(jsapi){
@@ -135,7 +139,7 @@
 
        var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
-           callpay(typeof o == 'object' ? data : JSON.parse(data));
+           callpay(typeof data == 'object' ? data : JSON.parse(data));
        }, "JSON");
 
 

@@ -1,6 +1,6 @@
 <?php
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
+// error_reporting(E_ALL);
+// ini_set('display_errors', '1');
 require_once "../lib/WxPay.Api.php";
 /**
  * 
@@ -71,7 +71,8 @@ class JsApiPay
 		|| !array_key_exists("prepay_id", $UnifiedOrderResult)
 		|| $UnifiedOrderResult['prepay_id'] == "")
 		{
-			throw new WxPayException("参数错误");
+			//throw new WxPayException("参数错误");
+			return json_encode(["result" => "FAIL", "message" => "微信支付接口需要在微信开发调试工具或微信客户端上才可以正常获取到jsapi参数"]);
 		}
 		$jsapi = new WxPayJsApiPay();
 		$jsapi->SetAppid($UnifiedOrderResult["appid"]);
