@@ -58,6 +58,8 @@
        var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
            callpay(typeof data == 'object' ? data : JSON.parse(data));
+           console.log("===获取微信支付jsapi参数接口");
+           console.log(data.rs);
        }, "JSON");
 
         var callpay = function(jsapi){
@@ -137,7 +139,12 @@
 
        var data = {"openid": AppCommon.getUser().id, "grouptype": "10km", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
-           callpay(typeof data == 'object' ? data : JSON.parse(data));
+            callpay(typeof data == 'object' ? data : JSON.parse(data));
+            console.log("===获取微信支付jsapi参数接口");
+            if(data.result)
+                console.log(data.message);
+            else
+                console.log(JSON.stringify(data));
        }, "JSON");
 
 
