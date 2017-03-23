@@ -55,7 +55,7 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "5km", "outtradeno": "5d8e051a08816761979999b12a48b030"};
+       var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data, function(data){
            callpay(typeof data == 'object' ? data : JSON.parse(data));
        }, "JSON");
