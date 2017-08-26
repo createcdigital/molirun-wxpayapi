@@ -21,8 +21,8 @@ $outtradeno = $_POST['outtradeno'];
 if(isset($openid) && isset($grouptype) && isset($outtradeno))
 {
     //            body content
-    $body         = $grouptype != "家庭跑" ? "100元一般跑" : "200元家庭跑";
-    $fee          = $grouptype != "家庭跑" ? "10000" : "20000";
+    $body         = $grouptype != "亲子跑" ? "100元一般跑" : "200元亲子跑";
+    $fee          = $grouptype != "亲子跑" ? "10000" : "20000";
 
     // generate JsApi
     $input = new WxPayUnifiedOrder();
