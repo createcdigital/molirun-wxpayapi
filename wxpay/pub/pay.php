@@ -22,9 +22,9 @@ if(isset($openid) && isset($grouptype) && isset($outtradeno))
 {
     //            body content
     $body         = $grouptype != "亲子跑" ? "100元一般跑" : "200元亲子跑";
-    //$fee          = $grouptype != "亲子跑" ? "10000" : "20000";
+    $fee          = $grouptype != "亲子跑" ? "10000" : "20000";
     // debug
-    $fee          = $grouptype != "亲子跑" ? "1" : "2";
+    //$fee          = $grouptype != "亲子跑" ? "1" : "2";
 
     // generate JsApi
     $input = new WxPayUnifiedOrder();
