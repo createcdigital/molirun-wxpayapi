@@ -21,6 +21,7 @@ $outtradeno = $_POST['outtradeno'];
 if(isset($openid) && isset($grouptype) && isset($outtradeno))
 {
     // log for debug error
+    Log::DEBUG("=======================timeStamp:".date("YmdHis")." begin request wxpayapi=======================");
     Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, start request wxpayapi, openid:".$openid.", grouptype:".$grouptype.", outtradeno:".$outtradeno);
 
     //            body content
