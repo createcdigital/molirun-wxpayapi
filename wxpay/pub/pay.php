@@ -20,6 +20,9 @@ $outtradeno = $_POST['outtradeno'];
 
 if(isset($openid) && isset($grouptype) && isset($outtradeno))
 {
+    // log for debug error
+    Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, start request wxpayapi, openid:".$openid.", grouptype:".$grouptype.", outtradeno:".$outtradeno);
+
     //            body content
     $body         = $grouptype != "亲子跑" ? "100元一般跑" : "200元亲子跑";
     $fee          = $grouptype != "亲子跑" ? "10000" : "20000";
@@ -59,7 +62,7 @@ function getUnifiedOrderResult($UnifiedOrderResult)
         || !array_key_exists("prepay_id", $UnifiedOrderResult)
         || $UnifiedOrderResult['prepay_id'] == "")
     {
-        $message = "message: ".$UnifiedOrderResult['return_code'].$UnifiedOrderResult['return_msg'];
+        $message = "message(err_code: ".$UnifiedOrderResult['err_code']."err_code_des: ".$UnifiedOrderResult['err_code_des'].").";
 
         Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi fail, ".$message);
     }

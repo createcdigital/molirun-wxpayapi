@@ -72,7 +72,7 @@ class JsApiPay
 		|| $UnifiedOrderResult['prepay_id'] == "")
 		{
 			//throw new WxPayException("参数错误");
-			return json_encode(["result" => "FAIL", "message" => "微信支付接口需要在微信开发调试工具或微信客户端上才可以正常获取到jsapi参数. message: ".json_encode($UnifiedOrderResult)]);
+			return json_encode(["result" => "FAIL", "message" => "微信支付接口需要在微信开发调试工具或微信客户端上才可以正常获取到jsapi参数. response: ".json_encode($UnifiedOrderResult)]);
 		}
 		$jsapi = new WxPayJsApiPay();
 		$jsapi->SetAppid($UnifiedOrderResult["appid"]);
