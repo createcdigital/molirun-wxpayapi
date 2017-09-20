@@ -75,7 +75,7 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno":  md5(new Date().getTime() + "420782199101270018")};
+       var data_param = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno":  md5(new Date().getTime() + "420782199101270018")};
        $.post('wxpay/pub/pay.php', data_param, function(data){
             var jsapi_parameters = typeof data == 'object' ? data : JSON.parse(data)
 
@@ -86,7 +86,6 @@
                 alert("支付错误！请您[截屏本页]并发送给公众号后台，稍后客服会帮您处理！("
                         + data_param.outtradeno + "#"+ date_tools("yyyyMMddhhmmss") +")"
                     );
-                console.log("==========get jsapi parameters fail, message:" + JSON.stringify(data));
             }
 
        }, "JSON");
@@ -111,7 +110,7 @@
                     {
                         alert("支付成功");
                     }else{
-                        alert("支付失败！");
+                        alert("用户取消支付或支付系统错误！");
                     }
                 }
             );
@@ -188,7 +187,7 @@
 
 
 
-       var data = {"openid": AppCommon.getUser().id, "grouptype": "10km", "outtradeno": md5(new Date().getTime() + "420782199101270018")};
+       var data_param = {"openid": AppCommon.getUser().id, "grouptype": "10km", "outtradeno": md5(new Date().getTime() + "420782199101270018")};
        //var data_param = {"openid": AppCommon.getUser().id, "grouptype": "10km", "outtradeno": "8455e85022176dd957b986493b2f1822"};
        $.post('wxpay/pub/pay.php', data_param, function(data){
             var jsapi_parameters = typeof data == 'object' ? data : JSON.parse(data)
@@ -227,7 +226,7 @@
                     {
                         alert("支付成功");
                     }else{
-                        alert("支付失败！");
+                        alert("用户取消支付或支付系统错误！");
                     }
                 }
             );
