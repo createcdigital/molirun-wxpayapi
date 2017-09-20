@@ -79,7 +79,7 @@
        $.post('wxpay/pub/pay.php', data_param, function(data){
             var jsapi_parameters = typeof data == 'object' ? data : JSON.parse(data)
 
-            if(data.appid)
+            if(data.appId)
                 callpay(jsapi_parameters);
             else
             {
@@ -192,7 +192,7 @@
        $.post('wxpay/pub/pay.php', data_param, function(data){
             var jsapi_parameters = typeof data == 'object' ? data : JSON.parse(data)
 
-            if(data.appid)
+            if(data.appId)
                 callpay(jsapi_parameters);
             else
             {
