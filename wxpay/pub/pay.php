@@ -62,7 +62,7 @@ function getUnifiedOrderResult($UnifiedOrderResult)
         || !array_key_exists("prepay_id", $UnifiedOrderResult)
         || $UnifiedOrderResult['prepay_id'] == "")
     {
-        $message = "message(err_code: ".$UnifiedOrderResult['err_code']."err_code_des: ".$UnifiedOrderResult['err_code_des'].").";
+        $message = "message(err_code: ".$UnifiedOrderResult['err_code'].", err_code_des: ".$UnifiedOrderResult['err_code_des'].").";
 
         Log::DEBUG("===timeStamp:".date("YmdHis")." pay.php, request wxpayapi fail, ".$message);
     }
