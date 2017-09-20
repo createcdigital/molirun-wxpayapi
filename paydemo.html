@@ -20,6 +20,26 @@
 <pre>
     <code class="js">
         &lt;script&gt;
+
+            // 日期格式化
+            var date_tools = function (fmt) {
+                var date = new Date();
+
+                var o = {
+                    "M+": date.getMonth() + 1,
+                    "d+": date.getDate(),
+                    "h+": date.getHours(),
+                    "m+": date.getMinutes(),
+                    "s+": date.getSeconds(),
+                    "q+": Math.floor((date.getMonth() + 3) / 3),
+                    "S": date.getMilliseconds()
+                };
+                if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+                for (var k in o)
+                    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                return fmt;
+            }
+
             // 获取微信支付jsapi参数接口
             // 注意：微信支付接口需要在微信开发调试工具或微信客户端上才可以正常获取到jsapi参数。
             var AppCommon = function(){
@@ -56,10 +76,19 @@
 
 
        var data = {"openid": AppCommon.getUser().id, "grouptype": "家庭跑", "outtradeno":  md5(new Date().getTime() + "420782199101270018")};
-       $.post('wxpay/pub/pay.php', data, function(data){
-           callpay(typeof data == 'object' ? data : JSON.parse(data));
-           console.log("===获取微信支付jsapi参数接口");
-           console.log(data.rs);
+       $.post('wxpay/pub/pay.php', data_param, function(data){
+            var jsapi_parameters = typeof data == 'object' ? data : JSON.parse(data)
+
+            if(data.appid)
+                callpay(jsapi_parameters);
+            else
+            {
+                alert("支付错误！请您[截屏本页]并发送给公众号后台，稍后客服会帮您处理！("
+                        + data_param.outtradeno + "#"+ date_tools("yyyyMMddhhmmss") +")"
+                    );
+                console.log("==========get jsapi parameters fail, message:" + JSON.stringify(data));
+            }
+
        }, "JSON");
 
         var callpay = function(jsapi){
@@ -107,6 +136,25 @@
             hljs.highlightBlock(block);
         });
 
+        // for format date string
+        var date_tools = function (fmt) {
+            var date = new Date();
+
+            var o = {
+                "M+": date.getMonth() + 1,
+                "d+": date.getDate(),
+                "h+": date.getHours(),
+                "m+": date.getMinutes(),
+                "s+": date.getSeconds(),
+                "q+": Math.floor((date.getMonth() + 3) / 3),
+                "S": date.getMilliseconds()
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
         var AppCommon = function(){
             return {
                 getCookie : function(c_name)
@@ -141,14 +189,20 @@
 
 
        var data = {"openid": AppCommon.getUser().id, "grouptype": "10km", "outtradeno": md5(new Date().getTime() + "420782199101270018")};
-       $.post('wxpay/pub/pay.php', data, function(data){
-            callpay(typeof data == 'object' ? data : JSON.parse(data));
-            console.log("===got jsapi config: " + JSON.stringify(data));
+       //var data_param = {"openid": AppCommon.getUser().id, "grouptype": "10km", "outtradeno": "8455e85022176dd957b986493b2f1822"};
+       $.post('wxpay/pub/pay.php', data_param, function(data){
+            var jsapi_parameters = typeof data == 'object' ? data : JSON.parse(data)
 
-            // if(data.result)
-            //     console.log(data.message);
-            // else
-            //     console.log(JSON.stringify(data));
+            if(data.appid)
+                callpay(jsapi_parameters);
+            else
+            {
+                alert("支付错误！请您[截屏本页]并发送给公众号后台，稍后客服会帮您处理！("
+                        + data_param.outtradeno + "#"+ date_tools("yyyyMMddhhmmss") +")"
+                    );
+                console.log("==========get jsapi parameters fail, message:" + JSON.stringify(data));
+            }
+
        }, "JSON");
 
 
